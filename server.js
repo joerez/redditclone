@@ -16,6 +16,10 @@ app.get('/', function (req, res) {
   res.render('reddit-index')
 })
 
+//Create a post
+app.get('/posts/new', function (req, res) {
+  res.render('posts-new.handlebars')
+})
 
 
 app.listen(3000, () => console.log('Listening on port 3000!'));
