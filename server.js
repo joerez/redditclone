@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+
+
 var exphbs = require('express-handlebars');
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -9,8 +11,10 @@ app.use(express.static('public'));
 
 
 
-app.get('/', (req, res) => res.send('Hello World!'));
-
+//index
+app.get('/', function (req, res) {
+  res.render('reddit-index')
+})
 
 
 
