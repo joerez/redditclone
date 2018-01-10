@@ -6,6 +6,7 @@ const PostSchema = new Schema({
   subreddit: { type: String, required: true },
   url:      { type: String, required: true },
   summary:  { type: String, required: true }
+
 })
 
 PostSchema.pre('save', (next) => {

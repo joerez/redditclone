@@ -13,9 +13,14 @@ app.use(express.static('public'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+//Controller and model exports
 
 const Posts = require('./controllers/posts.js')(app);
 const Post = require('./models/post.js');
+
+const Comments = require('./controllers/comments-controller.js')(app);
+const Comment = require('./models/comment')
+
 
 
 mongoose.Promise = global.Promise
@@ -51,6 +56,32 @@ app.get('/posts/:id', function (req, res) {
  })
 })
 
+// SUBREDDIT
+app.get('/n/:subreddit', function(req, res) {
+  Post.find({ subreddit: req.params.subreddit }).then((posts) => {
+    res.render('posts-index.handlebars', { posts })
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+
+// CREATE Comment
+app.post('/posts/:postId/comments', function (req, res) {
+  // INSTANTIATE INSTANCE OF MODEL
+  const comment = new Comment(req.body)
+
+  // SAVE INSTANCE OF Comment MODEL TO DB
+  comment.save().then((comment) => {
+    return Post.findById(req.params.postId)
+  }).then((post) => {
+    post.comments.unshift(comment)
+    return post.save()
+  }).then((post) => {
+    res.redirect(`/`)
+  }).catch((err) => {
+    console.log(err)
+  })
+})
 
 
 app.listen(3000, () => console.log('Listening on port 3000!'));
