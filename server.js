@@ -1,7 +1,14 @@
 const express = require('express');
+
+var cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
+
+app.use(cookieParser()); // Add this after you initialize express.
 
 
 
@@ -23,6 +30,7 @@ const Comment = require('./models/comment');
 
 const Auth = require('./controllers/auth.js')(app);
 const User = require('./models/user');
+
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/redditclone', { useMongoClient : true });
@@ -85,6 +93,11 @@ app.post('/posts/:postId/comments', function (req, res) {
   })
 })
 
+// LOGOUT
+app.get('/logout', (req, res) => {
+  res.clearCookie('nToken');
+  res.redirect('/');
+});
 
 
 
