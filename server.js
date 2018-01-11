@@ -19,8 +19,9 @@ const Posts = require('./controllers/posts.js')(app);
 const Post = require('./models/post.js');
 
 const Comments = require('./controllers/comments-controller.js')(app);
-const Comment = require('./models/comment')
+const Comment = require('./models/comment');
 
+const Auth = require('./controllers/auth.js')(app);
 
 
 mongoose.Promise = global.Promise
