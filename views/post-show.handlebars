@@ -9,6 +9,13 @@
          <button type="submit">Save</button>
        </div>
      </form>
+     <p style="color: #2980b9;">Comments</p>
+     <hr>
+     {{#each post.comments}}
+      <p>{{this.content}}</p>
+      <hr>
+    {{/each}}
+
 
   </div>
 

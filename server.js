@@ -47,13 +47,14 @@ app.get('/posts/new', function (req, res) {
 })
 
 //Show a post
-app.get('/posts/:id', function (req, res) {
+app.get('/posts/:id', (req, res) => {
  // LOOK UP THE POST
- Post.findById(req.params.id).then((post) => {
-   res.render('post-show.handlebars', { post })
- }).catch((err) => {
-   console.log(err.message)
- })
+Post.findById(req.params.id).populate('comments').then((post) => {
+  res.render('post-show.handlebars', { post })
+}).catch((err) => {
+  console.log(err.message)
+})
+
 })
 
 // SUBREDDIT
@@ -82,6 +83,8 @@ app.post('/posts/:postId/comments', function (req, res) {
     console.log(err)
   })
 })
+
+
 
 
 app.listen(3000, () => console.log('Listening on port 3000!'));
