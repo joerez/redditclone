@@ -9,7 +9,6 @@ const UserSchema = new Schema({
   username        : { type: String, required: true }
 });
 
-// Define the callback with a regular function to avoid problems with this
 UserSchema.pre('save', function(next) {
   // SET createdAt AND updatedAt
   const now = new Date();
@@ -17,7 +16,25 @@ UserSchema.pre('save', function(next) {
   if ( !this.createdAt ) {
     this.createdAt = now;
   }
-  next();
+
+  // ENCRYPT PASSWORD
+  const user = this;
+  if (!user.isModified('password')) {
+    return next();
+  }
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      user.password = hash;
+      next();
+    });
+  });
 });
+
+
+UserSchema.methods.comparePassword = (password, done) => {
+  bcrypt.compare(password, this.password, (err, isMatch) => {
+    done(err, isMatch);
+  });
+};
 
 module.exports = mongoose.model('User', UserSchema);
