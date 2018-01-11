@@ -22,7 +22,7 @@ const Comments = require('./controllers/comments-controller.js')(app);
 const Comment = require('./models/comment');
 
 const Auth = require('./controllers/auth.js')(app);
-
+const User = require('./models/user');
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/redditclone', { useMongoClient : true });
