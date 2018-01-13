@@ -39,10 +39,27 @@ console.log("You are connected to the db")
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
+var checkAuth = (req, res, next) => {
+  console.log("Checking authentication");
+  if (typeof req.cookies.nToken === 'undefined' || req.cookies.nToken === null) {
+    req.user = null;
+  } else {
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+  }
+
+  next()
+}
+app.use(checkAuth);
 
 
 //index
 app.get('/', function (req, res) {
+
+  var currentUser = req.user;
+
+
   Post.find({}).then((posts) => {
     res.render('posts-index.handlebars', { posts: posts })
   }).catch((err) => {
@@ -52,11 +69,15 @@ app.get('/', function (req, res) {
 
 //Create a post
 app.get('/posts/new', function (req, res) {
+  var currentUser = req.user;
+
   res.render('posts-new.handlebars')
 })
 
 //Show a post
 app.get('/posts/:id', (req, res) => {
+  var currentUser = req.user;
+
  // LOOK UP THE POST
 Post.findById(req.params.id).populate('comments').then((post) => {
   res.render('post-show.handlebars', { post })
@@ -68,6 +89,8 @@ Post.findById(req.params.id).populate('comments').then((post) => {
 
 // SUBREDDIT
 app.get('/n/:subreddit', function(req, res) {
+  var currentUser = req.user;
+
   Post.find({ subreddit: req.params.subreddit }).then((posts) => {
     res.render('posts-index.handlebars', { posts })
   }).catch((err) => {
@@ -77,6 +100,7 @@ app.get('/n/:subreddit', function(req, res) {
 
 // CREATE Comment
 app.post('/posts/:postId/comments', function (req, res) {
+
   // INSTANTIATE INSTANCE OF MODEL
   const comment = new Comment(req.body)
 
@@ -101,6 +125,8 @@ app.get('/logout', (req, res) => {
 
 // LOGIN FORM
 app.get('/login', (req, res) => {
+  var currentUser = req.user;
+
   res.render('login.handlebars');
 });
 
@@ -110,15 +136,17 @@ app.post('/login', (req, res) => {
   const password = req.body.password;
   // Find this user name
   User.findOne({ username }, 'username password').then((user) => {
+    
     if (!user) {
       // User not found
-      return res.status(401).send({ message: 'Wrong Username or Password' });
+
+      return res.status(401).send({ message: 'Wrong Username or Password *' });
     }
     // Check the password
     user.comparePassword(password, (err, isMatch) => {
       if (!isMatch) {
         // Password does not match
-        return res.status(401).send({ message: "Wrong Username or password"});
+        return res.status(401).send({ message: "Wrong Username or password ?"});
       }
       // Create a token
       const token = jwt.sign(
