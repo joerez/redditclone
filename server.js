@@ -60,13 +60,13 @@ app.use(checkAuth);
 
 
 //index
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
 
-  var currentUser = req.user;
+  const currentUser = req.user;
 
 
   Post.find({}).then((posts) => {
-    res.render('posts-index.handlebars', { posts: posts })
+    res.render('posts-index.handlebars', { posts, currentUser })
   }).catch((err) => {
     console.log(err.message);
   })
@@ -76,7 +76,7 @@ app.get('/', function (req, res) {
 app.get('/posts/new', function (req, res) {
   var currentUser = req.user;
 
-  res.render('posts-new.handlebars')
+  res.render('posts-new.handlebars', { currentUser })
 })
 
 //Show a post
@@ -85,7 +85,7 @@ app.get('/posts/:id', (req, res) => {
 
  // LOOK UP THE POST
 Post.findById(req.params.id).populate('comments').then((post) => {
-  res.render('post-show.handlebars', { post })
+  res.render('post-show.handlebars', { post, currentUser })
 }).catch((err) => {
   console.log(err.message)
 })
@@ -97,7 +97,7 @@ app.get('/n/:subreddit', function(req, res) {
   var currentUser = req.user;
 
   Post.find({ subreddit: req.params.subreddit }).then((posts) => {
-    res.render('posts-index.handlebars', { posts })
+    res.render('posts-index.handlebars', { posts, currentUser })
   }).catch((err) => {
     console.log(err)
   })
@@ -132,7 +132,7 @@ app.get('/logout', (req, res) => {
 app.get('/login', (req, res) => {
   var currentUser = req.user;
 
-  res.render('login.handlebars');
+  res.render('login.handlebars', { currentUser });
 });
 
 // LOGIN
