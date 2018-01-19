@@ -1,5 +1,7 @@
 const express = require('express');
 
+require('dotenv').config();
+
 var cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
@@ -8,7 +10,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 
-app.use(cookieParser()); // Add this after you initialize express.
 
 
 
@@ -39,6 +40,7 @@ console.log("You are connected to the db")
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
+//checkAuth middleware
 var checkAuth = (req, res, next) => {
   console.log("Checking authentication");
   if (typeof req.cookies.nToken === 'undefined' || req.cookies.nToken === null) {
@@ -51,6 +53,9 @@ var checkAuth = (req, res, next) => {
 
   next()
 }
+
+app.use(cookieParser()); // Add this after you initialize express.
+
 app.use(checkAuth);
 
 
@@ -136,7 +141,7 @@ app.post('/login', (req, res) => {
   const password = req.body.password;
   // Find this user name
   User.findOne({ username }, 'username password').then((user) => {
-    
+
     if (!user) {
       // User not found
 
@@ -150,9 +155,9 @@ app.post('/login', (req, res) => {
       }
       // Create a token
       const token = jwt.sign(
-        { _id: user._id, username: user.username }, process.env.SECRET,
-        { expiresIn: "60 days" }
-      );
+        { _id: user._id, username: user.username }, process.env.SECRET);
+      //  { expiresIn: "60 days" }
+
       // Set a cookie and redirect to root
       res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
       res.redirect('/');
