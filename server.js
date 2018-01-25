@@ -73,11 +73,10 @@ app.get('/', (req, res) => {
 })
 
 //Create a post
-app.get('/posts/new', function (req, res) {
-  var currentUser = req.user;
+app.get('/posts/new', function(req,res){
+    res.render('posts-new.handlebars' , {currentUser : req.Username});
+});
 
-  res.render('posts-new.handlebars', { currentUser })
-})
 
 //Show a post
 app.get('/posts/:id', (req, res) => {
