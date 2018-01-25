@@ -23,12 +23,6 @@ app.set('view engine', 'handlebars');
 
 //Controller and model exports
 
-const Posts = require('./controllers/posts.js')(app);
-const Post = require('./models/post.js');
-
-const Comments = require('./controllers/comments-controller.js')(app);
-const Comment = require('./models/comment');
-
 const Auth = require('./controllers/auth.js')(app);
 const User = require('./models/user');
 
@@ -42,13 +36,14 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 //checkAuth middleware
 var checkAuth = (req, res, next) => {
-  console.log("Checking authentication");
+  //console.log("Checking authentication");
   if (typeof req.cookies.nToken === 'undefined' || req.cookies.nToken === null) {
     req.user = null;
   } else {
     var token = req.cookies.nToken;
     var decodedToken = jwt.decode(token, { complete: true }) || {};
     req.user = decodedToken.payload;
+    console.log(req.user)
   }
 
   next()
@@ -58,6 +53,11 @@ app.use(cookieParser()); // Add this after you initialize express.
 
 app.use(checkAuth);
 
+const Posts = require('./controllers/posts.js')(app);
+const Post = require('./models/post.js');
+
+const Comments = require('./controllers/comments-controller.js')(app);
+const Comment = require('./models/comment');
 
 //index
 app.get('/', (req, res) => {
@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
 
 //Create a post
 app.get('/posts/new', function(req,res){
-    res.render('posts-new.handlebars' , {currentUser : req.Username});
+    res.render('posts-new.handlebars' , {currentUser : req.user});
 });
 
 

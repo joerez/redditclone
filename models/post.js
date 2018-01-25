@@ -7,7 +7,7 @@ const PostSchema = new Schema({
   url:      { type: String, required: true },
   summary:  { type: String, required: true },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-  username: { type: Schema.Types.ObjectId, ref: 'Username', required: true }
+  username: { type: String, required: true }
 })
 
 PostSchema.pre('save', (next) => {

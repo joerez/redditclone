@@ -1,13 +1,16 @@
 const Comment = require('../models/comment')
 
-const Post = require('../models/post')
+const Post = require('../models/post');
+
+
+
 
 module.exports = function(app) {
   // CREATE Comment
 app.post('/posts/:postId/comments', function (req, res) {
   // INSTANTIATE INSTANCE OF MODEL
   const comment = new Comment(req.body)
-
+  comment.username = req.user.username
   // SAVE INSTANCE OF Comment MODEL TO DB
   comment.save().then((comment) => {
     return Post.findById(req.params.postId)
