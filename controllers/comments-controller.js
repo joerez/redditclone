@@ -2,27 +2,32 @@ const Comment = require('../models/comment')
 
 const Post = require('../models/post');
 
-
-
-
 module.exports = function(app) {
-  // CREATE Comment
-app.post('/posts/:postId/comments', function (req, res) {
-  // INSTANTIATE INSTANCE OF MODEL
-  const comment = new Comment(req.body)
-  comment.username = req.user.username
-  // SAVE INSTANCE OF Comment MODEL TO DB
-  comment.save().then((comment) => {
-    return Post.findById(req.params.postId)
-  }).then((post) => {
-    post.comments.unshift(comment)
-    return post.save()
-  }).then((post) => {
-    res.redirect(`/`)
-  }).catch((err) => {
-    console.log(err)
-  })
 
-})
 
- };
+
+
+  // CREATE
+  app.post('/post/:postId/comments', (req, res) => {
+    const currentUser = req.user;
+    if (currentUser === null) {
+      return res.redirect('/login');
+    }
+    const postId = req.params.postId;
+    Post.findById(postId).then((post) => {
+      const content = req.body.postContent;
+
+      const comment = new Comment({
+        content : content,
+        username : req.user.username
+      });
+      comment.save();
+      post.comments.unshift(comment);
+      post.save();
+      return res.redirect('/post/'+postId);
+    }).catch((err) => {
+
+    });
+  });
+
+};

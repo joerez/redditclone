@@ -7,7 +7,8 @@ const UserSchema = new Schema({
   updatedAt       : { type: Date },
   password        : { type: String, select: false },
   username        : { type: String, required: true },
-  posts           : [{ type: Schema.Types.ObjectId, ref: 'User', required: true }]
+  posts           : [{ type: Schema.Types.ObjectId, ref: 'User', required: true }],
+  comments        : [{ type: Schema.Types.ObjectId, ref: 'Comment', required: true}]
 });
 
 UserSchema.pre('save', function(next) {
@@ -30,7 +31,6 @@ UserSchema.pre('save', function(next) {
     });
   });
 });
-
 
 UserSchema.methods.comparePassword = function(password, done) {
   bcrypt.compare(password, this.password, (err, isMatch) => {

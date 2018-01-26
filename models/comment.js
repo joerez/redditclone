@@ -7,4 +7,17 @@ const CommentSchema = new Schema({
    username: { type: String, required: true }
 })
 
-module.exports = mongoose.model('Comment', CommentSchema)
+const BlogPost = new Schema({
+  username  : { type: String, required: true },
+  title     : String,
+  body      : String,
+  date      : Date,
+  comments  : [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  meta      : {
+    votes : Number,
+    favs  : Number
+    }
+});
+
+
+module.exports = mongoose.model('Comment', CommentSchema, 'Blogpost', BlogPost)

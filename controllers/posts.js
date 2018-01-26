@@ -16,11 +16,5 @@ app.post('/posts/new', function(req,res) {
         console.log(post);
         res.redirect(post.posturl);
     });
-});
-
-
-
-
-
-
+  });
 };

@@ -1,3 +1,9 @@
+{{#if currentUser}}
+<h1 align="center">Welcome Back {{currentUser.username}}</h1>
+{{else}}
+<h1 align="center">You must be logged in to post</h1>
+
+{{/if}}
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
     <ul>
@@ -7,6 +13,7 @@
             <a href="/posts/{{this._id}}" class="lead">{{this.title}}</a>
           </div>
           <a href="{{this.url}}" target="_blank">{{this.url}}<a>
+          <p align="center">By: {{this.username}}</p>
           <div class="text-right">
             <a href="/n/{{this.subreddit}}">{{this.subreddit}}</a>
           </div>

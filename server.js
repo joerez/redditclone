@@ -9,10 +9,6 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-
-
-
-
 var exphbs = require('express-handlebars');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -25,7 +21,6 @@ app.set('view engine', 'handlebars');
 
 const Auth = require('./controllers/auth.js')(app);
 const User = require('./models/user');
-
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/redditclone', { useMongoClient : true });
@@ -62,11 +57,8 @@ const Comment = require('./models/comment');
 //index
 app.get('/', (req, res) => {
 
-  const currentUser = req.user;
-
-
   Post.find({}).then((posts) => {
-    res.render('posts-index.handlebars', { posts, currentUser })
+    res.render('posts-index.handlebars', { posts, currentUser : req.user })
   }).catch((err) => {
     console.log(err.message);
   })
@@ -77,7 +69,6 @@ app.get('/posts/new', function(req,res){
     res.render('posts-new.handlebars' , {currentUser : req.user});
 });
 
-
 //Show a post
 app.get('/posts/:id', (req, res) => {
   var currentUser = req.user;
@@ -87,8 +78,7 @@ Post.findById(req.params.id).populate('comments').then((post) => {
   res.render('post-show.handlebars', { post, currentUser })
 }).catch((err) => {
   console.log(err.message)
-})
-
+    })
 })
 
 // SUBREDDIT
@@ -165,7 +155,5 @@ app.post('/login', (req, res) => {
     console.log(err);
   });
 });
-
-
 
 app.listen(3000, () => console.log('Listening on port 3000!'));
