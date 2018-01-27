@@ -54,6 +54,8 @@ const Post = require('./models/post.js');
 const Comments = require('./controllers/comments-controller.js')(app);
 const Comment = require('./models/comment');
 
+const Replies = require('./controllers/replies.js');
+
 //index
 app.get('/', (req, res) => {
 
