@@ -1,9 +1,11 @@
 <div class="row">
   <div class="col-sm-6 col-sm-offset-3">
+    <p style="color: green;">By: {{post.username}}</p>
+
     <a href="{{post.url}}" class="lead">{{post.title}}</a>
-    <p align="center">By: {{post.username}}</p>
 
     <p>{{post.summary}}</p>
+    {{#if currentUser}}
     <!--Comments-->
     <form action="/post/{{post._id}}/comments" method="post">
        <textarea class='form-control' name="content" placeholder="Comment"></textarea>
@@ -11,10 +13,15 @@
          <button type="submit">Save</button>
        </div>
      </form>
+     {{else}}
+     <hr>
+     <h2 align="center">You must be logged in to make comments</h2>
+     <hr>
+     {{/if}}
      <p style="color: #2980b9;">Comments</p>
      <hr>
      {{#each post.comments}}
-     <p align="center">By :{{this.username}}</p>
+     <p style="color: green;">{{this.username}}</p>
 
       <p>{{this.content}}</p>
       <hr>
