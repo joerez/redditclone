@@ -5,12 +5,16 @@ var User = require('../models/user');
 module.exports = (app) => {
   // NEW REPLY
   app.get('/posts/:postId/comments/:commentId/replies/new', (req, res) => {
-  let post
+  let post;
+
+  const postId = req.post._id;
+
+
   Post.findById(req.params.postId).then((p) => {
     post = p
     Comment.findById(req.params.commentId)
   }).then((comment) => {
-    res.render('replies-new.handlebars', { post, comment });
+    res.render('replies-new.handlebars', { ...req.post, post, comment, postId });
   }).catch((err) => {
     console.log(err.message);
   });

@@ -1,0 +1,10 @@
+<p style="color: #2980b9;">Comments</p>
+<hr>
+{{#each post.comments}}
+<p style="color: green;">{{this.username}}</p>
+
+ <p>{{this.content}}</p>
+ <a class="reply" href="/posts/{{postId}}/comments/{{this._id}}/replies/new">Reply</a>
+
+ <hr>
+{{/each}}

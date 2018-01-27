@@ -18,16 +18,9 @@
      <h2 align="center">You must be logged in to make comments</h2>
      <hr>
      {{/if}}
-     <p style="color: #2980b9;">Comments</p>
-     <hr>
-     {{#each post.comments}}
-     <p style="color: green;">{{this.username}}</p>
 
-      <p>{{this.content}}</p>
-      <a href="/posts/{{post._id}}/comments/{{comment._id}}/replies/new">Reply</a>
+     {{> comments}}
 
-      <hr>
-    {{/each}}
 
 
   </div>
