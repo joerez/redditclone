@@ -5,7 +5,7 @@
 
     <p>{{post.summary}}</p>
     <!--Comments-->
-    <form action="/posts/{{post._id}}/comments" method="post">
+    <form action="/post/{{post._id}}/comments" method="post">
        <textarea class='form-control' name="content" placeholder="Comment"></textarea>
        <div class="text-right">
          <button type="submit">Save</button>
