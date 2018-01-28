@@ -4,9 +4,6 @@ const Post = require('../models/post');
 
 module.exports = function(app) {
 
-
-
-
   // CREATE
   app.post('/post/:postId/comments', (req, res) => {
 
