@@ -10,7 +10,8 @@ module.exports = function(app) {
     Post.findById(req.params.postId).then((post) => {
       const comment = new Comment({
         content : req.body.content,
-        username : req.user.username
+        username : req.user.username,
+        idpost : req.params.postId
       });
       comment.save((err, comment) => {
         post.comments.unshift(comment);

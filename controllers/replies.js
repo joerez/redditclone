@@ -5,19 +5,21 @@ var User = require('../models/user');
 module.exports = (app) => {
   // NEW REPLY
   app.get('/posts/:postId/comments/:commentId/replies/new', (req, res) => {
-  let post;
+    console.log("We got here");
+    let post;
 
-  const postId = req.post._id;
+    const postId = req.params.postId;
+    const commentId = req.params.commentId;
 
-
-  Post.findById(req.params.postId).then((p) => {
-    post = p
-    Comment.findById(req.params.commentId)
-  }).then((comment) => {
-    res.render('replies-new.handlebars', { ...req.post, post, comment, postId });
-  }).catch((err) => {
-    console.log(err.message);
-  });
+    Post.findById(postId).then((p) => {
+      post = p
+      Comment.findById(commentId)
+    }).then((comment) => {
+      console.log("Here's post id: " + postId)
+      res.render('replies-new.handlebars', {post, comment});
+    }).catch((err) => {
+      console.log(err.message);
+    });
 });
 
   // CREATE REPLY
