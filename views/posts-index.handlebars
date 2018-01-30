@@ -21,11 +21,11 @@
             <a href="/n/{{this.subreddit}}">{{this.subreddit}}</a>
           </div>
 
-          <form class="vote-up" data-id="{{post._id}}">
+          <form method="POST" class="vote-up" data-id="{{this._id}}">
             <button type="submit"><i class="glyphicon glyphicon-arrow-up"></i></button>
           </form>
 
-          <form class="vote-down" data-id="{{post._id}}">
+          <form method="POST" class="vote-down" data-id="{{this._id}}">
             <button type="submit"><i class="glyphicon glyphicon-arrow-down"></i></button>
           </form>
 

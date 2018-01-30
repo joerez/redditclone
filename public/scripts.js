@@ -4,6 +4,12 @@ $(document).ready(function() {
     e.preventDefault();
 
     var postId = $(this).data('id');
+
+    // $.get('path', {vars:123}, function(data) {
+    //
+    // })
+
+    console.log('posts/' + postId + '/vote-up')
     $.ajax({
       type: 'PUT',
       url: 'posts/' + postId + '/vote-up',
