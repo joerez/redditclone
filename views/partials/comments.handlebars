@@ -5,7 +5,28 @@
 <p style="color: green;">{{this.username}}</p>
 
  <p>{{this.content}}</p>
- <a class="reply" href="/posts/{{this.idpost}}/comments/{{this._id}}/replies/new">Reply</a>
+
+
+
+ <a class="reply" href="/posts/{{postId}}/comments/{{commentId}}/replies/new">Reply</a>
+ <style>
+ .comment-indent {
+  margin-left: 10px;
+}
+
+ </style>
+
+ <div class="col-xs-12 comment-indent">
+   <p style="color: green;">{{this.username}}</p>
+
+   <p>{{this.content}}</p>
+
+   {{#each this.comments}}
+     {{> comment}}
+   {{/each }}
+ </div>
+
 
  <hr>
+
 {{/each}}
