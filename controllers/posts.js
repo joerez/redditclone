@@ -2,6 +2,29 @@ var Post = require('../models/post');
 
 module.exports = (app) => {
 
+  //VOTE UP
+  app.put('posts/:id/vote-up', function (req, res) {
+    Post.findById(req.params.id).exec(function (err, post) {
+      post.upVotes.push(req.user._id)
+      post.voteScore = post.voteTotal + 1
+      post.save();
+
+      res.status(200);
+    })
+  })
+
+  //VOTE DOWN
+  app.put('posts/:id/vote-down', function (req, res) {
+    Post.findById(req.params.id).exec(function (err, post) {
+      post.downVotes.push(req.user._id)
+      post.voteScore = post.voteTotal - 1
+      post.save();
+
+      res.status(200);
+    })
+  })
+
+
   //Create a post
   app.get('/posts/new', function(req,res){
       res.render('posts-new.handlebars' , {currentUser : req.user});
